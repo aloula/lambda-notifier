@@ -1,0 +1,36 @@
+service: lambda-notifier
+frameworkVersion: "2"
+provider:
+  name: aws
+  runtime: python3.8
+  region: ${opt:region}
+  lambdaHashingVersion: 20201221
+  timeout: 30
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
+        - sqs:ReceiveMessage
+      Resource: "arn:aws:sqs:us-east-2:377134634459:webhook/*"
+
+package:
+  individually: true
+  patterns:
+  - '!.venv/**'
+  - '!*.md'
+  - '!*.png'
+  - '!*.json'
+  - '!*.py'
+  - '!*.txt'
+  - 'notifier.py'
+
+functions:
+  Webhook:
+    name: lambda-notifier
+    handler: notifier.send_webhook
+    events:
+      - sqs:
+          arn: arn:aws:sqs:us-east-2:377134634459:webhook
+          batchSize: 1
+          maximumBatchingWindow: 60
