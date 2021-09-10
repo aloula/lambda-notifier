@@ -39,8 +39,5 @@ $ sls deploy --region us-east-2 --verbose
 Execute the <send_webhooks.py> passing the URL and number of webhooks to be send
 
 ```Bash
-$ ./send_webhooks.py -q "https://sqs.us-east-2.amazonaws.com/530234245000/hmg-lb-notifier" -n 10
+$ ./send_webhooks.py -q "https://sqs.us-east-2.amazonaws.com/XXXXX/webhooks" -n 10
 ```
-
-### TODO:
-- Ajustar <serverless.yml> para pegar o ARN da Queue como variável
