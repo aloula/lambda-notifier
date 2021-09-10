@@ -1,4 +1,4 @@
-service: lambda-notifier
+service: notifier
 frameworkVersion: "2"
 provider:
   name: aws
@@ -27,7 +27,7 @@ package:
 
 functions:
   Webhook:
-    name: lambda-notifier
+    name: notifier
     handler: notifier.send_webhook
     events:
       - sqs:
