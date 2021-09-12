@@ -18,6 +18,7 @@ var/
 .venv/
 __pycache__
 .vscode
+.env
 
 # Serverless directories
 .serverless
