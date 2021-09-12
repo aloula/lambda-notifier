@@ -1,4 +1,5 @@
 import urllib3, json, logging
+from es_log import send_log
 
 # Log config
 logging.basicConfig(level=logging.INFO, format="%(asctime)s : %(message)s")
@@ -16,11 +17,11 @@ def send_webhook(event, context):
     for record in event['Records']:
         logging.info("Received Message:", record)
         payload = (record['body'])
+        logging.info("Sending received msg to ES...")
+        send_log(payload)
         data_json = json.loads(payload)
         url = (data_json['receiverUrl'])
         resp = http.request('POST',url, body=payload)
-        logging.info({
-            "message": payload, 
-            "status_code": resp.status, 
-            "response": resp.data
-    })
+        receiver_resp = {"message": payload, "status_code": resp.status, "response": resp.data}
+        logging.info(receiver_resp)
+        send_log(receiver_resp)
