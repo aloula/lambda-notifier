@@ -11,7 +11,7 @@ from generate_payload import update_payload
 
 # create SQS client
 sqs = boto3.client('sqs', region_name='us-east-2')
-boto3.setup_default_session(profile_name='retro')
+# boto3.setup_default_session(profile_name='retro')
 
 # send message to SQS queue
 def send_to_queue():

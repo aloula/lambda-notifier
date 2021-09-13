@@ -2,10 +2,10 @@ service: notifier
 frameworkVersion: "2"
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.9
   region: ${opt:region}
   lambdaHashingVersion: 20201221
-  timeout: 30
+  timeout: 10
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -13,6 +13,10 @@ provider:
         - sqs:GetQueueAttributes
         - sqs:ReceiveMessage
       Resource: "arn:aws:sqs:us-east-2:377134634459:webhook/*"
+    - Effect: "Allow"
+      Action:
+        - sqs:PutMessage
+      Resource: "arn:aws:sqs:us-east-2:377134634459:webhook-dlq/*"
 
 package:
   individually: true
@@ -33,4 +37,6 @@ functions:
       - sqs:
           arn: arn:aws:sqs:us-east-2:377134634459:webhook
           batchSize: 1
-          maximumBatchingWindow: 60
+          maximumBatchingWindow: 30
+    destinations:
+      onFailure: arn:aws:sqs:us-east-2:377134634459:webhook-dlq
