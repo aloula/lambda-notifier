@@ -1,5 +1,5 @@
 {
-	"receiverUrl": "https://webhook.site/456e45ac-9113-4f6b-9c17-5ef9de8c8f5d",
+	"receiverUrl": "https://webhook.site/YOUR-WEBHOOK-URL-HERE",
 	"body": {
 		"msg_hash": "25b83458-dfd4-430a-bd55-ba6b745d6bf7",
 		"artist": "Pink Floyd",

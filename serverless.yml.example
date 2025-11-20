@@ -12,11 +12,11 @@ provider:
         - sqs:DeleteMessage
         - sqs:GetQueueAttributes
         - sqs:ReceiveMessage
-      Resource: "arn:aws:sqs:us-east-2:918880261221:webhook"
+      Resource: "arn:aws:sqs:REGION:ACCOUNT_ID:QUEUE_NAME"
     - Effect: "Allow"
       Action:
         - sqs:SendMessage
-      Resource: "arn:aws:sqs:us-east-2:918880261221:webhook"
+      Resource: "arn:aws:sqs:REGION:ACCOUNT_ID:QUEUE_NAME"
 
 package:
   individually: true
@@ -35,8 +35,8 @@ functions:
     handler: notifier.send_webhook
     events:
       - sqs:
-          arn: arn:aws:sqs:us-east-2:918880261221:webhook
+          arn: arn:aws:sqs:REGION:ACCOUNT_ID:QUEUE_NAME
           batchSize: 1
           maximumBatchingWindow: 30
     destinations:
-      onFailure: arn:aws:sqs:us-east-2:918880261221:webhook-dlq
+      onFailure: arn:aws:sqs:REGION:ACCOUNT_ID:QUEUE_NAME-dlq

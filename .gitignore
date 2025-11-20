@@ -21,3 +21,8 @@ __pycache__
 
 # Serverless directories
 .serverless
+
+# Arquivos com informações sensíveis
+serverless.yml
+serverless-policy.json
+notifier_payload.json

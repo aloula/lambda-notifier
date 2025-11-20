@@ -17,9 +17,19 @@ Python Lambda function to send Webhooks triggered by SQS messages
 
 1 - Crie uma fila SQS com configurações padrão no console AWS
 
-2 - Copie o ARN da fila e atualize o arquivo `serverless.yml`
+2 - Configure os arquivos com suas informações:
+```bash
+$ cp serverless.yml.example serverless.yml
+$ cp serverless-policy.json.example serverless-policy.json
+$ cp notifier_payload.json.example notifier_payload.json
+```
 
-3 - Faça o deploy do projeto alterando a região de acordo com as configurações da sua conta AWS:
+3 - Edite o arquivo `serverless.yml` e substitua:
+   - `REGION` pela região AWS (ex: `us-east-2`)
+   - `ACCOUNT_ID` pelo ID da sua conta AWS
+   - `QUEUE_NAME` pelo nome da sua fila SQS
+
+4 - Faça o deploy do projeto:
 
 ```bash
 $ sls deploy --region us-east-2 --verbose
