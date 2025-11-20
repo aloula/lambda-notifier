@@ -5,38 +5,67 @@ Python Lambda function to send Webhooks triggered by SQS messages
 ![Alt text](lambda_webhooks.png?raw=true "Diagram")
 
 
-### Requisites:
+### Requisitos:
 
 * [Serverless Framework](https://www.serverless.com/framework/docs/getting-started/)
+* Node.js LTS (recomendado usar [nvm](https://github.com/nvm-sh/nvm))
+* Python 3.12+
+* AWS CLI configurado com credenciais válidas
 
 
 ### Deploy:
 
-1 - Create SQS Queue with default settings
+1 - Crie uma fila SQS com configurações padrão no console AWS
 
-2 - Copy the ARN and update the `serverless.yml` file
+2 - Copie o ARN da fila e atualize o arquivo `serverless.yml`
 
-3 - Deploy the project changing the region according to your AWS account settings
+3 - Faça o deploy do projeto alterando a região de acordo com as configurações da sua conta AWS:
 
 ```bash
 $ sls deploy --region us-east-2 --verbose
 ```
 
-### Test
+### Teste Local
 
-1 - Set a virtual env and install the dependencies:
+1 - Configure um ambiente virtual e instale as dependências:
 
 ```bash
-$ sudo apt install python3 python3-pip python3-dev python3-venv
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-2 - Copy "Your unique URL" from https://webhook.site/ and change it in `notifier_payload.json` file
+2 - Copie "Your unique URL" do https://webhook.site/ e altere no arquivo `notifier_payload.json`
 
-3 - Execute the <send_webhooks.py> passing the URL and number of webhooks to be send
+3 - Execute o script `send_webhooks.py` passando a URL da fila SQS e o número de webhooks a serem enviados:
 
 ```bash
 $ ./send_webhooks.py -q "https://sqs.us-east-2.amazonaws.com/XXXXX/webhooks" -n 10
+```
+
+### Estrutura do Projeto
+
+```
+├── notifier.py              # Função Lambda principal
+├── send_webhooks.py         # Script de teste para enviar mensagens SQS
+├── generate_payload.py      # Gerador de payload para testes
+├── notifier_payload.json    # Template do payload de teste
+├── serverless.yml           # Configuração do Serverless Framework
+├── requirements.txt         # Dependências Python
+└── README.md
+```
+
+### Configuração
+
+A função Lambda está configurada para:
+- Runtime: Python 3.12
+- Timeout: 10 segundos
+- Trigger: Fila SQS com batch size de 1 mensagem
+- Dead Letter Queue (DLQ): Para mensagens com falha no processamento
+
+### Monitoramento
+
+Logs da função Lambda podem ser visualizados no CloudWatch:
+```bash
+$ sls logs -f Webhook --tail
 ```

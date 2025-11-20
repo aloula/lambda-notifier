@@ -1,8 +1,8 @@
 service: notifier
-frameworkVersion: "2"
+frameworkVersion: "4"
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.12
   region: ${opt:region}
   lambdaHashingVersion: 20201221
   timeout: 10
@@ -12,11 +12,11 @@ provider:
         - sqs:DeleteMessage
         - sqs:GetQueueAttributes
         - sqs:ReceiveMessage
-      Resource: "arn:aws:sqs:us-east-2:377134634459:webhook/*"
+      Resource: "arn:aws:sqs:us-east-2:918880261221:webhook"
     - Effect: "Allow"
       Action:
-        - sqs:PutMessage
-      Resource: "arn:aws:sqs:us-east-2:377134634459:webhook-dlq/*"
+        - sqs:SendMessage
+      Resource: "arn:aws:sqs:us-east-2:918880261221:webhook"
 
 package:
   individually: true
@@ -35,8 +35,8 @@ functions:
     handler: notifier.send_webhook
     events:
       - sqs:
-          arn: arn:aws:sqs:us-east-2:377134634459:webhook
+          arn: arn:aws:sqs:us-east-2:918880261221:webhook
           batchSize: 1
           maximumBatchingWindow: 30
     destinations:
-      onFailure: arn:aws:sqs:us-east-2:377134634459:webhook-dlq
+      onFailure: arn:aws:sqs:us-east-2:918880261221:webhook-dlq
